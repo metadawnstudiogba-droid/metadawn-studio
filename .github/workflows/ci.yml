@@ -33,4 +33,4 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
         env:
-          STUDIO_DATA_DIR: ${{ github.workspace }}/.studio-data
+          LOCALAPPDATA: ${{ github.workspace }}/.next-cache
