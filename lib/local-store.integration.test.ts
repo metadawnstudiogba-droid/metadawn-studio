@@ -14,7 +14,7 @@ afterEach(async () => {
   vi.unstubAllEnvs();
   if (dataDirectory) await rm(dataDirectory, { recursive: true, force: true });
   dataDirectory = undefined;
-}, 30_000);
+});
 
 it("reads a saved provider row from the local PGlite workspace", async () => {
   dataDirectory = await mkdtemp(join(tmpdir(), "metadawn-local-store-"));
@@ -50,4 +50,4 @@ it("reads a saved provider row from the local PGlite workspace", async () => {
   await store.createGeneration(LOCAL_USER_ID, generation);
   const claims = await Promise.all(Array.from({ length: 8 }, () => store.claimGenerationArchiveWorker(LOCAL_USER_ID, generation.id)));
   expect(claims.filter(Boolean)).toHaveLength(1);
-});
+}, 30_000);
