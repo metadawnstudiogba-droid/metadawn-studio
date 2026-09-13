@@ -33,4 +33,4 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
         env:
-          LOCALAPPDATA: ${{ github.workspace }}/.next-cache
+          USERPROFILE: ${{ github.workspace }}

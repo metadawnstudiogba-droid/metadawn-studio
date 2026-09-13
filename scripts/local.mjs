@@ -16,7 +16,7 @@ const major = Number(process.versions.node.split(".")[0]);
 async function build() {
   await new Promise((resolve, reject) => {
     const env = { ...process.env, STUDIO_MODE: "hosted", NEXT_TELEMETRY_DISABLED: "1" };
-    if (process.platform === "win32") env.LOCALAPPDATA = join(root, ".next", "cache");
+    if (process.platform === "win32") env.USERPROFILE = root;
     const child = spawn(process.execPath, [join(root, "node_modules", "next", "dist", "bin", "next"), "build"], { cwd: root, stdio: "inherit", env });
     child.once("error", reject); child.once("exit", code => code === 0 ? resolve() : reject(new Error("本地程序构建失败，请修复上方错误后重试 setup:local。")));
   });
