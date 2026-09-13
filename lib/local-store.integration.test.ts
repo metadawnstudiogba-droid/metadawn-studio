@@ -10,11 +10,11 @@ import type { GenerationRecord } from "./types";
 let dataDirectory: string | undefined;
 
 afterEach(async () => {
-  await closeLocalDatabase();
+  await Promise.all([closeLocalDatabase(), closeLocalDatabase()]);
   vi.unstubAllEnvs();
   if (dataDirectory) await rm(dataDirectory, { recursive: true, force: true });
   dataDirectory = undefined;
-});
+}, 30_000);
 
 it("reads a saved provider row from the local PGlite workspace", async () => {
   dataDirectory = await mkdtemp(join(tmpdir(), "metadawn-local-store-"));
