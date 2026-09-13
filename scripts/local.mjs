@@ -70,6 +70,7 @@ try {
   if (command === "setup") {
     process.env.STUDIO_MODE = "local";
     const workspace = await getLocalDatabase({ allowCreate: true, port: flag("--port") });
+    process.env.STUDIO_DATA_DIR = workspace.directory;
     console.log(`本地资料目录已就绪：${workspace.directory}`);
     await closeLocalDatabase();
     await build();
