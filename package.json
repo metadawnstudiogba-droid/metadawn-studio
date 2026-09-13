@@ -1,0 +1,41 @@
+{
+  "name": "metadawn-studio",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "setup:local": "node scripts/local.mjs setup",
+    "start:local": "node scripts/local.mjs start",
+    "doctor:local": "node scripts/local.mjs doctor",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "aws4fetch": "^1.0.20",
+    "better-auth": "1.7.2",
+    "ipaddr.js": "2.5.0",
+    "next": "15.5.24",
+    "pg": "^8.13.3",
+    "proper-lockfile": "4.1.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "undici": "8.10.2"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^4.1.13",
+    "@types/node": "^22.13.14",
+    "@types/pg": "^8.11.11",
+    "@types/proper-lockfile": "4.1.4",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "typescript": "^5.8.2",
+    "vitest": "^3.1.1"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.0.0 <27"
+  }
+}

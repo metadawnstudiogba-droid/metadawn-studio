@@ -1,0 +1,14 @@
+{
+  "rules": [
+    {
+      "id": "seedance-user-bucket-signed-access",
+      "allowed": {
+        "origins": ["https://studio.example.com"],
+        "methods": ["GET", "PUT", "HEAD"],
+        "headers": ["Content-Type"]
+      },
+      "exposeHeaders": ["ETag"],
+      "maxAgeSeconds": 3600
+    }
+  ]
+}

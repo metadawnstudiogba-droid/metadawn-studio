@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "id": "kkidc",
+  "name": "KKIDC",
+  "version": "1.0.0",
+  "documentationUrl": "https://ai-api.kkidc.com",
+  "endpoints": {
+    "generation": {
+      "label": "生成 API 地址",
+      "defaultUrl": "https://ai-api.kkidc.com"
+    },
+    "assets": {
+      "label": "素材登记 API 地址",
+      "defaultUrl": "https://ai-api.kkidc.com"
+    }
+  },
+  "credentials": {
+    "generationToken": {
+      "label": "生成 API Key",
+      "purpose": "generation"
+    },
+    "assetToken": {
+      "label": "素材登记 Token",
+      "purpose": "assets"
+    }
+  },
+  "models": [
+    {
+      "id": "doubao-seedance-2-5-260628",
+      "label": "Seedance 2.5"
+    },
+    {
+      "id": "doubao-seedance-2-0-260128",
+      "label": "Seedance 2.0",
+      "capabilities": {
+        "resolutions": [
+          "480p",
+          "720p",
+          "1080p",
+          "4k"
+        ]
+      }
+    }
+  ],
+  "capabilities": {
+    "modes": [
+      "generate",
+      "extend",
+      "edit",
+      "green_screen",
+      "white_model"
+    ],
+    "resolutions": [
+      "480p",
+      "720p",
+      "1080p"
+    ],
+    "ratios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "adaptive"
+    ],
+    "minDuration": 4,
+    "maxDuration": 30,
+    "maxExtendDuration": 180,
+    "audio": "required",
+    "references": {
+      "image": 30,
+      "video": 10,
+      "audio": 10
+    }
+  },
+  "operations": {
+    "createGeneration": {
+      "endpoint": "generation",
+      "method": "POST",
+      "path": "/sd/api/v3/contents/generations/tasks",
+      "auth": {
+        "type": "bearer",
+        "credential": "generationToken"
+      },
+      "body": {
+        "model": {
+          "$ref": "input.model"
+        },
+        "prompt": {
+          "$ref": "input.prompt"
+        },
+        "content": {
+          "$ref": "content"
+        },
+        "generate_audio": {
+          "$ref": "input.generateAudio"
+        },
+        "ratio": {
+          "$ref": "input.ratio"
+        },
+        "duration": {
+          "$ref": "input.duration"
+        },
+        "resolution": {
+          "$ref": "input.resolution"
+        },
+        "watermark": false,
+        "edit_range": {
+          "$ref": "input.editRange"
+        }
+      },
+      "response": {
+        "id": [
+          "id",
+          "data.id"
+        ],
+        "error": [
+          "error.message",
+          "message"
+        ],
+        "failure": {
+          "path": "success",
+          "equals": false
+        }
+      }
+    },
+    "getTask": {
+      "endpoint": "generation",
+      "method": "GET",
+      "path": "/sd/api/v3/contents/generations/tasks/{task.id}",
+      "auth": {
+        "type": "bearer",
+        "credential": "generationToken"
+      },
+      "response": {
+        "id": [
+          "id",
+          "data.id"
+        ],
+        "status": [
+          "status",
+          "data.status"
+        ],
+        "states": {
+          "queued": "WAITING",
+          "running": "WAITING",
+          "in_progress": "WAITING",
+          "submitted": "WAITING",
+          "pending": "WAITING",
+          "processing": "WAITING",
+          "succeeded": "SUCCESS",
+          "success": "SUCCESS",
+          "ready": "SUCCESS",
+          "active": "SUCCESS",
+          "failed": "FAILURE",
+          "failure": "FAILURE",
+          "rejected": "FAILURE",
+          "expired": "FAILURE",
+          "cancelled": "FAILURE"
+        },
+        "videoUrl": [
+          "content.video_url",
+          "data.content.video_url"
+        ],
+        "error": [
+          "error.message",
+          "fail_reason",
+          "message"
+        ],
+        "usage": [
+          "usage",
+          "data.usage"
+        ]
+      }
+    },
+    "registerAsset": {
+      "endpoint": "assets",
+      "method": "POST",
+      "path": "/v1/assets/upload",
+      "auth": {
+        "type": "bearer",
+        "credential": "assetToken"
+      },
+      "body": {
+        "url": {
+          "$ref": "asset.url"
+        },
+        "type": {
+          "$ref": "asset.type"
+        },
+        "purpose": {
+          "$ref": "asset.purpose"
+        }
+      },
+      "response": {
+        "id": [
+          "data.asset_id"
+        ],
+        "status": [
+          "data.status",
+          "status"
+        ],
+        "states": {
+          "queued": "WAITING",
+          "running": "WAITING",
+          "in_progress": "WAITING",
+          "submitted": "WAITING",
+          "pending": "WAITING",
+          "processing": "WAITING",
+          "succeeded": "SUCCESS",
+          "success": "SUCCESS",
+          "ready": "SUCCESS",
+          "active": "SUCCESS",
+          "failed": "FAILURE",
+          "failure": "FAILURE",
+          "rejected": "FAILURE",
+          "expired": "FAILURE",
+          "cancelled": "FAILURE"
+        },
+        "error": [
+          "error.message",
+          "message"
+        ],
+        "failure": {
+          "path": "success",
+          "equals": false
+        }
+      }
+    },
+    "getAsset": {
+      "endpoint": "assets",
+      "method": "GET",
+      "path": "/v1/assets/{asset.id}",
+      "auth": {
+        "type": "bearer",
+        "credential": "assetToken"
+      },
+      "response": {
+        "status": [
+          "data.status",
+          "status"
+        ],
+        "states": {
+          "queued": "WAITING",
+          "running": "WAITING",
+          "in_progress": "WAITING",
+          "submitted": "WAITING",
+          "pending": "WAITING",
+          "processing": "WAITING",
+          "succeeded": "SUCCESS",
+          "success": "SUCCESS",
+          "ready": "SUCCESS",
+          "active": "SUCCESS",
+          "failed": "FAILURE",
+          "failure": "FAILURE",
+          "rejected": "FAILURE",
+          "expired": "FAILURE",
+          "cancelled": "FAILURE"
+        },
+        "error": [
+          "error.message",
+          "message"
+        ],
+        "failure": {
+          "path": "success",
+          "equals": false
+        }
+      }
+    }
+  }
+}

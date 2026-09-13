@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 1,
+  "id": "volcengine-ark",
+  "name": "火山方舟",
+  "version": "1.0.0",
+  "documentationUrl": "https://www.volcengine.com/docs/82379/1520757",
+  "endpoints": {
+    "generation": {
+      "label": "方舟生成 API 地址",
+      "defaultUrl": "https://ark.cn-beijing.volces.com/api/v3"
+    },
+    "assets": {
+      "label": "方舟素材管理 API 地址",
+      "defaultUrl": "https://ark.cn-beijing.volcengineapi.com"
+    }
+  },
+  "credentials": {
+    "generationToken": {
+      "label": "方舟生成 API Key",
+      "purpose": "generation"
+    },
+    "assetAccessKeyId": {
+      "label": "素材管理 Access Key ID",
+      "purpose": "assets"
+    },
+    "assetSecretAccessKey": {
+      "label": "素材管理 Secret Access Key",
+      "purpose": "assets"
+    }
+  },
+  "models": [
+    {
+      "id": "doubao-seedance-2-5-260628",
+      "label": "Seedance 2.5"
+    },
+    {
+      "id": "doubao-seedance-2-0-260128",
+      "label": "Seedance 2.0"
+    }
+  ],
+  "capabilities": {
+    "modes": [
+      "generate"
+    ],
+    "resolutions": [
+      "480p",
+      "720p",
+      "1080p"
+    ],
+    "ratios": [
+      "16:9",
+      "9:16",
+      "1:1",
+      "adaptive"
+    ],
+    "minDuration": 4,
+    "maxDuration": 15,
+    "audio": "required",
+    "references": {
+      "image": 9,
+      "video": 3,
+      "audio": 3
+    }
+  },
+  "operations": {
+    "createGeneration": {
+      "endpoint": "generation",
+      "method": "POST",
+      "path": "/contents/generations/tasks",
+      "auth": {
+        "type": "bearer",
+        "credential": "generationToken"
+      },
+      "body": {
+        "model": {
+          "$ref": "input.model"
+        },
+        "content": {
+          "$ref": "content"
+        },
+        "generate_audio": {
+          "$ref": "input.generateAudio"
+        },
+        "ratio": {
+          "$ref": "input.ratio"
+        },
+        "duration": {
+          "$ref": "input.duration"
+        },
+        "resolution": {
+          "$ref": "input.resolution"
+        },
+        "watermark": false
+      },
+      "response": {
+        "id": [
+          "id",
+          "data.id"
+        ],
+        "error": [
+          "error.message",
+          "message"
+        ],
+        "failure": {
+          "path": "success",
+          "equals": false
+        }
+      }
+    },
+    "getTask": {
+      "endpoint": "generation",
+      "method": "GET",
+      "path": "/contents/generations/tasks/{task.id}",
+      "auth": {
+        "type": "bearer",
+        "credential": "generationToken"
+      },
+      "response": {
+        "id": [
+          "id",
+          "data.id"
+        ],
+        "status": [
+          "status",
+          "data.status"
+        ],
+        "states": {
+          "queued": "WAITING",
+          "running": "WAITING",
+          "in_progress": "WAITING",
+          "submitted": "WAITING",
+          "pending": "WAITING",
+          "processing": "WAITING",
+          "succeeded": "SUCCESS",
+          "success": "SUCCESS",
+          "ready": "SUCCESS",
+          "active": "SUCCESS",
+          "failed": "FAILURE",
+          "failure": "FAILURE",
+          "rejected": "FAILURE",
+          "expired": "FAILURE",
+          "cancelled": "FAILURE"
+        },
+        "videoUrl": [
+          "content.video_url",
+          "data.content.video_url"
+        ],
+        "error": [
+          "error.message",
+          "fail_reason",
+          "message"
+        ],
+        "usage": [
+          "usage",
+          "data.usage"
+        ]
+      }
+    },
+    "registerAsset": {
+      "endpoint": "assets",
+      "method": "POST",
+      "path": "/",
+      "query": {
+        "Action": "CreateAsset",
+        "Version": "2024-01-01"
+      },
+      "auth": {
+        "type": "volcengine",
+        "accessKeyId": "assetAccessKeyId",
+        "secretAccessKey": "assetSecretAccessKey",
+        "region": "cn-beijing",
+        "service": "ark"
+      },
+      "body": {
+        "AssetType": {
+          "$ref": "asset.providerType"
+        },
+        "URL": {
+          "$ref": "asset.url"
+        },
+        "Name": {
+          "$ref": "asset.name"
+        },
+        "GroupId": {
+          "$ref": "parameters.assetGroupId"
+        },
+        "ProjectName": {
+          "$ref": "parameters.assetProjectName"
+        }
+      },
+      "response": {
+        "id": [
+          "Result.Id"
+        ],
+        "error": [
+          "ResponseMetadata.Error.Message"
+        ]
+      }
+    },
+    "getAsset": {
+      "endpoint": "assets",
+      "method": "POST",
+      "path": "/",
+      "query": {
+        "Action": "GetAsset",
+        "Version": "2024-01-01"
+      },
+      "auth": {
+        "type": "volcengine",
+        "accessKeyId": "assetAccessKeyId",
+        "secretAccessKey": "assetSecretAccessKey",
+        "region": "cn-beijing",
+        "service": "ark"
+      },
+      "body": {
+        "Id": {
+          "$ref": "asset.id"
+        },
+        "ProjectName": {
+          "$ref": "parameters.assetProjectName"
+        }
+      },
+      "response": {
+        "id": [
+          "Result.Id"
+        ],
+        "status": [
+          "Result.Status"
+        ],
+        "states": {
+          "queued": "WAITING",
+          "running": "WAITING",
+          "in_progress": "WAITING",
+          "submitted": "WAITING",
+          "pending": "WAITING",
+          "processing": "WAITING",
+          "succeeded": "SUCCESS",
+          "success": "SUCCESS",
+          "ready": "SUCCESS",
+          "active": "SUCCESS",
+          "failed": "FAILURE",
+          "failure": "FAILURE",
+          "rejected": "FAILURE",
+          "expired": "FAILURE",
+          "cancelled": "FAILURE"
+        },
+        "error": [
+          "ResponseMetadata.Error.Message"
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "assetGroupId": {
+      "label": "已授权的素材组 Group ID",
+      "required": true,
+      "purpose": "assets"
+    },
+    "assetProjectName": {
+      "label": "素材所属项目",
+      "default": "default",
+      "purpose": "assets"
+    }
+  }
+}
